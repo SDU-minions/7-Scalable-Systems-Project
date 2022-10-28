@@ -2,14 +2,12 @@
 Helper class to simplify common read-only BigQuery tasks.
 """
 
-
 import pandas as pd
 import numpy as np
 import time
 
 from google.cloud import bigquery
 from google.oauth2 import service_account
-
 
 class BigQueryHelper(object):
     """

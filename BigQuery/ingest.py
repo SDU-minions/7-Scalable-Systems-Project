@@ -1,8 +1,9 @@
-import pandas as pd
 # https://github.com/SohierDane/BigQuery_Helper
 from bq_helper import BigQueryHelper
+from kafka import KafkaProducer
 
 bq_assistant = BigQueryHelper("bigquery-public-data", "github_repos")
+k_producer = KafkaProducer(bootstrap_servers=['kafka:9092'])
 
 tables = bq_assistant.list_tables()
 
@@ -17,4 +18,6 @@ def tblPrint(table):
     print("----------------------------------")
 
 for table in tables:
-    tblPrint(table)
+    #tblPrint(table)
+    # Write to a kafka topic with a KafkaProducer
+    k_producer.send('tables', bytes(table, 'utf-8'))
