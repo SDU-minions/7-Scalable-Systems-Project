@@ -1,0 +1,15 @@
+ version: "3.9"
+
+ services:
+  datanode2:
+    image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
+    container_name: datanode2
+    restart: always
+    volumes:
+      - hadoop_datanode2:/hadoop/dfs/data
+    ports:
+      - 9865:9864
+    environment:
+      SERVICE_PRECONDITION: "bddst-g11-Node2.uvm.sdu.dk:9870"
+    env_file:
+      - ./hadoop.env
