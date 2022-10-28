@@ -6,17 +6,13 @@ services:
     container_name: datanode2
     restart: always
     volumes:
-      - hadoop_datanode2:/hadoop/dfs/data
+      - hadoop_datanode1:/hadoop/dfs/data
     ports:
       - 9864:9864
     environment:
-      SERVICE_PRECONDITION: "bddst-g11-Node2.uvm.sdu.dk:9870"
+      SERVICE_PRECONDITION: "10.123.252.194:9870"
     env_file:
       - ./hadoop.env
 
 volumes:
-  hadoop_datanode2:
-
-networks:
-  default:
-    name: big-data-network
+  hadoop_datanode1:

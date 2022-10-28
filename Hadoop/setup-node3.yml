@@ -10,7 +10,7 @@ services:
    ports:
      - 9865:9864
    environment:
-     SERVICE_PRECONDITION: "bddst-g11-Node2.uvm.sdu.dk:9870"
+     SERVICE_PRECONDITION: "10.123.252.194:9870"
    env_file:
      - ./hadoop.env
 
