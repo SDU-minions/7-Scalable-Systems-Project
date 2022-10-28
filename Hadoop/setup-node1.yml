@@ -1,21 +1,6 @@
 version: "3.9"
 
 services:
-  namenode:
-    image: bde2020/hadoop-namenode:2.0.0-hadoop3.2.1-java8
-    container_name: namenode
-    restart: always
-    ports:
-      - 9870:9870
-      - 9000:9000
-    volumes:
-      - ./stream-in:/stream-in
-      - hadoop_namenode:/hadoop/dfs/name
-    environment:
-      - CLUSTER_NAME=test
-    env_file:
-      - ./hadoop.env
-
   datanode1:
     image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
     container_name: datanode2
@@ -30,7 +15,6 @@ services:
       - ./hadoop.env
 
 volumes:
-  hadoop_namenode:
   hadoop_datanode2:
 
 networks:
