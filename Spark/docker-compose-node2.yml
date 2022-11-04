@@ -1,0 +1,10 @@
+version: "3.9"
+
+services:
+  spark-worker-2:
+    image: bde2020/spark-worker:3.3.0-hadoop3.3
+    container_name: spark-worker-2
+    ports:
+      - 8081:8081
+    environment:
+      - "SPARK_MASTER=10.123.252.207:7077"
