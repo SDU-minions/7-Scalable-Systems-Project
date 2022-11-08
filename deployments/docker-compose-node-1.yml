@@ -34,8 +34,6 @@ services:
       ZOOKEEPER_SERVER_ID: 1
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_SERVERS: 10.123.252.231:2888:3888;10.123.252.194:2888:3888;10.123.252.207:2888:3888
-    networks:
-      shared_network:
   
   kafka-1:
     image: confluentinc/cp-kafka:7.2.1
