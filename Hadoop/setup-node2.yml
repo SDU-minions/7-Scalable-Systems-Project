@@ -23,7 +23,7 @@ services:
    volumes:
      - hadoop_datanode2:/hadoop/dfs/data
    ports:
-     - 9865:9864
+     - 9864:9864
    environment:
      SERVICE_PRECONDITION: "10.123.252.194:9870"
    env_file:
