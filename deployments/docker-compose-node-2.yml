@@ -16,9 +16,9 @@ services:
     env_file:
       - ./hadoop.env
 
-  datanode2:
+  datanode-2:
     image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
-    container_name: datanode2
+    container_name: datanode-2
     restart: always
     volumes:
       - hadoop_datanode2:/hadoop/dfs/data
@@ -39,6 +39,7 @@ services:
 
   zookeeper-2:
     image: confluentinc/cp-zookeeper:7.2.1
+    container_name: zookeeper-2
     network_mode: host
     # ports:
     #   - 2181:2181
@@ -48,11 +49,10 @@ services:
       ZOOKEEPER_SERVER_ID: 2
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_SERVERS: 10.123.252.231:2888:3888;10.123.252.194:2888:3888;10.123.252.207:2888:3888
-    networks:
-      shared_network:
   
   kafka-2:
     image: confluentinc/cp-kafka:7.2.1
+    container_name: kafka-2
     ports:
       - 29092:29092
     environment:
@@ -69,12 +69,6 @@ services:
     restart: unless-stopped
     depends_on:
       - zookeeper-2
-    networks:
-      shared_network:
-
-networks:
-  shared_network:
-    name: "shared_network"
 
 volumes:
   hadoop_namenode:

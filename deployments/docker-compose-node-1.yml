@@ -1,9 +1,9 @@
 version: "3.9"
 
 services:
-  datanode1:
+  datanode-1:
     image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
-    container_name: datanode1
+    container_name: datanode-1
     restart: always
     volumes:
       - hadoop_datanode1:/hadoop/dfs/data
@@ -24,6 +24,7 @@ services:
 
   zookeeper-1:
     image: confluentinc/cp-zookeeper:7.2.1
+    container_name: zookeeper-1
     network_mode: host
     # ports:
     #   - 2181:2181
@@ -38,6 +39,7 @@ services:
   
   kafka-1:
     image: confluentinc/cp-kafka:7.2.1
+    container_name: kafka-1
     ports:
       - 19092:19092
     environment:
@@ -54,12 +56,11 @@ services:
     restart: unless-stopped
     depends_on:
       - zookeeper-1
-    networks:
-      shared_network:
   
   kowl:
     # We use the master tag as we want to use the latest features e.g. creation of topics.
     image: quay.io/cloudhut/kowl:master 
+    container_name: kowl
     ports:
       - 8080:8080
     restart: unless-stopped
@@ -69,12 +70,6 @@ services:
     environment:
       # kafka-1: 10.123.252.231; kafka-2: 10.123.252.194; kafka-3: 10.123.252.207; 
       KAFKA_BROKERS: 10.123.252.231:9092,10.123.252.194:9092,10.123.252.207:9092
-    networks:
-      shared_network:
-
-networks:
-  shared_network:
-    name: "shared_network"
 
 volumes:
   hadoop_datanode1:
