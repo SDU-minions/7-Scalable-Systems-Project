@@ -10,14 +10,13 @@ def importRepos():
     QUERY = """
             select repo_name
             from bigquery-public-data.github_repos.sample_repos
-            limit 50
-            """
+            """ # LIMIT count [ OFFSET skip_rows ]
     res = bq_assistant.query_to_pandas_safe(QUERY)
 
     print(res.values.size, " repos found.")
     for value in res.values:
         repo_name = value[0]
-        k_producer.send('sample_repos', bytes(repo_name, 'utf-8'))
+        k_producer.send('repos', bytes(repo_name, 'utf-8'))
         k_producer.flush()
 
 def importCommits():
@@ -27,7 +26,9 @@ def importCommits():
         where repo_name in (
         select repo_name
         from bigquery-public-data.github_repos.sample_repos)
-        limit 50
+        and author.date > "2005-01-01 00:00:01 UTC"
+        and author.date < "2016-12-13 23:59:59 UTC"
+        order by author.date asc, commit
         """
     res = bq_assistant.query_to_pandas_safe(QUERY)
 
@@ -43,7 +44,7 @@ def importCommits():
             'author' : author,
             'date': date
             }
-        k_producer.send('sample_commits', json.dumps(data).encode('utf-8'))
+        k_producer.send('commits', json.dumps(data).encode('utf-8'))
         k_producer.flush()
 
 def importFiles():
@@ -53,7 +54,6 @@ def importFiles():
             where repo_name in (
             select repo_name
             from bigquery-public-data.github_repos.sample_repos)
-            limit 50
             """
     res = bq_assistant.query_to_pandas_safe(QUERY, max_gb_scanned=6)
 
@@ -65,7 +65,7 @@ def importFiles():
             'repo_name ': repo_name,
             'path' : path
             }
-        k_producer.send('sample_files', json.dumps(data).encode('utf-8'))
+        k_producer.send('files', json.dumps(data).encode('utf-8'))
         k_producer.flush()
 
 def importLanguages():
@@ -75,7 +75,6 @@ def importLanguages():
             where repo_name in (
             select repo_name
             from bigquery-public-data.github_repos.sample_repos)
-            limit 50
             """
     res = bq_assistant.query_to_pandas_safe(QUERY)
 
