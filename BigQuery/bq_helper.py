@@ -23,7 +23,7 @@ class BigQueryHelper(object):
         self.max_wait_seconds = max_wait_seconds
 
         credentials = service_account.Credentials.from_service_account_file(
-            "scalable-systems-project-2947c0c56554.json", scopes=["https://www.googleapis.com/auth/cloud-platform"],
+            "key_jacob.json", scopes=["https://www.googleapis.com/auth/cloud-platform"],
         )
 
         self.client = bigquery.Client(credentials=credentials, project=credentials.project_id)

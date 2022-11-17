@@ -1,6 +1,7 @@
 # https://github.com/SohierDane/BigQuery_Helper
 from bq_helper import BigQueryHelper
 from kafka import KafkaProducer
+import datetime
 import json
 
 bq_assistant = BigQueryHelper("bigquery-public-data", "github_repos")
@@ -34,14 +35,13 @@ def saveCommits(res):
     for val in res.values:
         repo_name = val[0]
         repo_names = []
-        for repo in repo_name:
-            name = repo["name"]
+        for name in repo_name:
             repo_names.append(name)
         commit = val[1]
-        author = val[2]["name"]
-        date = val[2]["date"]["seconds"]
+        author = val[2]
+        date = val[3]["seconds"]
         data = {
-            'repo_names ': repo_names,
+            'repo_names': repo_names,
             'commit' : commit,
             'author' : author,
             'date': date
@@ -65,9 +65,11 @@ def importRepos():
     offset = 0
     while (True):
         QUERY = f"""
-            select repo_name
-            from bigquery-public-data.github_repos.sample_repos
-            ORDER BY repo_name
+            select repo
+            from bigquery-public-data.github_repos.commits c 
+            CROSS JOIN UNNEST(c.repo_name) as repo
+            GROUP BY repo
+            ORDER BY repo
             LIMIT {limit} OFFSET {offset}
             """
         res = bq_assistant.query_to_pandas_safe(QUERY)
@@ -84,9 +86,6 @@ def importLanguages():
         QUERY = f"""
                 select repo_name, language
                 from bigquery-public-data.github_repos.languages
-                where repo_name in (
-                select repo_name
-                from bigquery-public-data.github_repos.sample_repos)
                 order by repo_name
                 LIMIT {limit} OFFSET {offset}
                 """
@@ -101,15 +100,14 @@ def importCommits():
     limit = global_limit
     offset = 0
     while (True):
+        fromDate = datetime.datetime(2005, 1, 1).timestamp()
+        toDate = datetime.datetime(2016, 12, 31).timestamp()
         QUERY = f"""
-                select repo_name, commit, author
-                from bigquery-public-data.github_repos.sample_commits
-                where repo_name in (
-                select repo_name
-                from bigquery-public-data.github_repos.sample_repos)
-                and author.date > "2005-01-01 00:00:01 UTC"
-                and author.date < "2016-12-13 23:59:59 UTC"
-                order by author.date asc, commit
+                select repo_name, commit, author.name, author.date
+                from bigquery-public-data.github_repos.commits
+                where author.date.seconds >= {fromDate}
+                and author.date.seconds <= {toDate}
+                order by author.date.seconds asc, commit
                 LIMIT {limit} OFFSET {offset}
                 """
         res = bq_assistant.query_to_pandas_safe(QUERY)
@@ -125,10 +123,7 @@ def importFiles():
     while (True):
         QUERY = f"""
                 select repo_name, path
-                from bigquery-public-data.github_repos.sample_files
-                where repo_name in (
-                select repo_name
-                from bigquery-public-data.github_repos.sample_repos)
+                from bigquery-public-data.github_repos.files
                 order by repo_name, path
                 LIMIT {limit} OFFSET {offset}
                 """
@@ -139,8 +134,8 @@ def importFiles():
             break
         offset += limit
 
-#importRepos()
-#importCommits()
+importRepos()
+importCommits()
 importLanguages()
 
 k_producer.close()
