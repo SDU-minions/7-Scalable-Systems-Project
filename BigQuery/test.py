@@ -4,13 +4,11 @@ from bq_helper import BigQueryHelper
 bq_assistant = BigQueryHelper("bigquery-public-data", "github_repos")
 
 QUERY = """
-        select lang.name
-        from bigquery-public-data.github_repos.languages l
-        CROSS JOIN UNNEST(l.language) as lang
-        GROUP BY lang.name
-        ORDER BY lang.name
+        select repo_name, commit, author.name, author.date
+        from bigquery-public-data.github_repos.commits
+        limit 3
         """
-res = bq_assistant.query_to_pandas_safe(QUERY)
+res = bq_assistant.query_to_pandas_safe(QUERY, max_gb_scanned=107)
 print(res.values.size, " languages found.")
 for value in res.values:
     language = value[0]
