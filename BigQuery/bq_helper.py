@@ -134,10 +134,10 @@ class BigQueryHelper(object):
         my_job = self.client.query(query)
         start_time = time.time()
         while not my_job.done():
-            if (time.time() - start_time) > self.max_wait_seconds:
-                print("Max wait time elapsed, query cancelled.")
-                self.client.cancel_job(my_job.job_id)
-                return None
+            #if (time.time() - start_time) > self.max_wait_seconds:
+            #    print("Max wait time elapsed, query cancelled.")
+            #    self.client.cancel_job(my_job.job_id)
+            #    return None
             time.sleep(0.1)
         # Queries that hit errors will return an exception type.
         # Those exceptions don't get raised until we call my_job.to_dataframe()

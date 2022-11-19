@@ -3,6 +3,9 @@ from bq_helper import BigQueryHelper
 from kafka import KafkaProducer
 import datetime
 import json
+import io
+import avro.io
+import avro.schema
 
 bq_assistant = BigQueryHelper("bigquery-public-data", "github_repos")
 k_producer = KafkaProducer(bootstrap_servers=['kafka-1:9092'])
@@ -72,7 +75,7 @@ def importRepos():
             ORDER BY repo
             LIMIT {limit} OFFSET {offset}
             """
-        res = bq_assistant.query_to_pandas_safe(QUERY)
+        res = bq_assistant.query_to_pandas_safe(QUERY, max_gb_scanned=91)
         saveRepos(res)
         count = len(res.values)
         if (count == 0):
@@ -100,17 +103,16 @@ def importCommits():
     limit = global_limit
     offset = 0
     while (True):
-        fromDate = datetime.datetime(2005, 1, 1).timestamp()
+        fromDate = datetime.datetime(2012, 1, 1).timestamp()
         toDate = datetime.datetime(2016, 12, 31).timestamp()
         QUERY = f"""
                 select repo_name, commit, author.name, author.date
                 from bigquery-public-data.github_repos.commits
                 where author.date.seconds >= {fromDate}
                 and author.date.seconds <= {toDate}
-                order by author.date.seconds asc, commit
                 LIMIT {limit} OFFSET {offset}
                 """
-        res = bq_assistant.query_to_pandas_safe(QUERY)
+        res = bq_assistant.query_to_pandas_safe(QUERY, max_gb_scanned=107)
         saveCommits(res)
         count = len(res.values)
         if (count == 0):
@@ -134,8 +136,8 @@ def importFiles():
             break
         offset += limit
 
-importRepos()
+#importRepos()
+#importLanguages()
 importCommits()
-importLanguages()
 
 k_producer.close()
