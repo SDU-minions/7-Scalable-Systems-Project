@@ -3,9 +3,6 @@ from bq_helper import BigQueryHelper
 from kafka import KafkaProducer
 import datetime
 import json
-import io
-import avro.io
-import avro.schema
 
 bq_assistant = BigQueryHelper("bigquery-public-data", "github_repos")
 k_producer = KafkaProducer(bootstrap_servers=['kafka-1:9092'])
