@@ -100,8 +100,8 @@ def importCommits():
     limit = global_limit
     offset = 0
     while (True):
-        fromDate = datetime.datetime(2012, 1, 1).timestamp()
-        toDate = datetime.datetime(2016, 12, 31).timestamp()
+        fromDate = datetime.datetime(2002, 1, 1).timestamp()
+        toDate = datetime.datetime(2006, 12, 31).timestamp()
         QUERY = f"""
                 select repo_name, commit, author.name, author.date
                 from bigquery-public-data.github_repos.commits

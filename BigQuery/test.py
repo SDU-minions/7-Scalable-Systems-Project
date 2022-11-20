@@ -25,6 +25,22 @@ toDate = datetime.datetime(2011, 12, 31).timestamp()
 fromDate = datetime.datetime(2006, 1, 1).timestamp()
 toDate = datetime.datetime(2010, 12, 31).timestamp()
 
+# 15.996.403
+fromDate = datetime.datetime(2005, 1, 1).timestamp()
+toDate = datetime.datetime(2009, 12, 31).timestamp()
+
+# 12.068.691
+fromDate = datetime.datetime(2004, 1, 1).timestamp()
+toDate = datetime.datetime(2008, 12, 31).timestamp()
+
+# 9.846.404
+fromDate = datetime.datetime(2003, 1, 1).timestamp()
+toDate = datetime.datetime(2007, 12, 31).timestamp()
+
+# 7.920.803
+fromDate = datetime.datetime(2002, 1, 1).timestamp()
+toDate = datetime.datetime(2006, 12, 31).timestamp()
+
 SCHEMA_PATH = "Avro/repo.avsc"
 SCHEMA = avro.schema.parse(open(SCHEMA_PATH).read())
 
