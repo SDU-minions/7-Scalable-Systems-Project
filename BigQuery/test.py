@@ -5,6 +5,26 @@ import io
 import avro.schema
 import avro.io
 
+# 72.912.390
+fromDate = datetime.datetime(2010, 1, 1).timestamp()
+toDate = datetime.datetime(2014, 12, 31).timestamp()
+
+# 50.738.053
+fromDate = datetime.datetime(2009, 1, 1).timestamp()
+toDate = datetime.datetime(2013, 12, 31).timestamp()
+
+# 36.384.471
+fromDate = datetime.datetime(2008, 1, 1).timestamp()
+toDate = datetime.datetime(2012, 12, 31).timestamp()
+
+# 27.466.024
+fromDate = datetime.datetime(2007, 1, 1).timestamp()
+toDate = datetime.datetime(2011, 12, 31).timestamp()
+
+# 21.067.074
+fromDate = datetime.datetime(2006, 1, 1).timestamp()
+toDate = datetime.datetime(2010, 12, 31).timestamp()
+
 SCHEMA_PATH = "Avro/repo.avsc"
 SCHEMA = avro.schema.parse(open(SCHEMA_PATH).read())
 
@@ -35,7 +55,7 @@ encoder = avro.io.BinaryEncoder(bytes_writer)
 writer.write(
     {
         "repo_name": "zzzzzzzzzzz0/zhscript-go",
-        "langauges": {"Go": "60704", "Shell": "528"}
+        "langauges": {"Go": 60704, "Shell": 528}
     }, encoder)
 raw_bytes = bytes_writer.getvalue()
 
@@ -57,7 +77,7 @@ writer.write(
         "repo_names": ["ironbee/ironbee","b1v1r/ironbee"], 
         "commit": "628796557d37ecd41741f77eeb888109a518714d", 
         "author": "Sam Baskinger",
-        "date": "1368114069"
+        "date": 1368114069
     }, encoder)
 raw_bytes = bytes_writer.getvalue()
 

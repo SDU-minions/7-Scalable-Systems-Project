@@ -6,6 +6,6 @@
 		{"name": "repo_names", "type": {"type": "array", "items": "string"}},
 		{"name": "commit",  "type": "string"},
 		{"name": "author", "type": "string"},
-		{"name": "date", "type": "string"}
+		{"name": "date", "type": "int"}
 	]
 }

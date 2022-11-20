@@ -4,6 +4,6 @@
 	"name": "Language",
 	"fields": [
 		{"name": "repo_name",  "type": "string"},
-		{"name": "langauges", "type": {"type": "map", "values": "string"}}
+		{"name": "langauges", "type": {"type": "map", "values": "int"}}
 	]
 }
