@@ -1,0 +1,70 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "$id": "http://example.com/example.json",
+    "type": "object",
+    "default": {},
+    "title": "Root Schema",
+    "required": [
+      "repo_names",
+      "commit",
+      "author",
+      "date"
+    ],
+    "properties": {
+      "repo_names": {
+        "type": "array",
+        "default": [],
+        "title": "The repo_names Schema",
+        "items": {
+          "type": "string",
+          "title": "A Schema",
+          "examples": [
+            "ironbee/ironbee",
+            "b1v1r/ironbee"
+          ]
+        },
+        "examples": [
+          [
+            "ironbee/ironbee",
+            "b1v1r/ironbee"
+          ]
+        ]
+      },
+      "commit": {
+        "type": "string",
+        "default": "",
+        "title": "The commit Schema",
+        "examples": [
+          "628796557d37ecd41741f77eeb888109a518714d"
+        ]
+      },
+      "author": {
+        "type": "string",
+        "default": "",
+        "title": "The author Schema",
+        "examples": [
+          "Sam Baskinger"
+        ]
+      },
+      "date": {
+        "type": "integer",
+        "minimum": 0,
+        "default": 0,
+        "title": "The date Schema",
+        "examples": [
+          1368114069
+        ]
+      }
+    },
+    "examples": [
+      {
+        "repo_names": [
+          "ironbee/ironbee",
+          "b1v1r/ironbee"
+        ],
+        "commit": "628796557d37ecd41741f77eeb888109a518714d",
+        "author": "Sam Baskinger",
+        "date": 1368114069
+      }
+    ]
+  }

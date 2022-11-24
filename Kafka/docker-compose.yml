@@ -141,6 +141,27 @@ services:
       CONNECT_KEY_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
       CONNECT_VALUE_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
 
+  redpanda:
+    image: vectorized/console:latest
+    container_name: redpanda
+    ports:
+      - 8000:8080
+    restart: on-failure
+    entrypoint: /bin/sh
+    command: -c "echo \"$$CONSOLE_CONFIG_FILE\" > /tmp/config.yml; /app/console"
+    environment:
+      CONFIG_FILEPATH: /tmp/config.yml
+      CONSOLE_CONFIG_FILE: |
+        kafka:
+          brokers: ["kafka-1:9092","kafka-2:9092","kafka-3:9092"]
+        connect:
+          enabled: true
+          clusters:
+            - name: HDFS Connector
+              url: http://kafka-connect:8083
+    networks:
+      shared_network:
+
   kowl:
     # We use the master tag as we want to use the latest features e.g. creation of topics.
     image: quay.io/cloudhut/kowl:master 
