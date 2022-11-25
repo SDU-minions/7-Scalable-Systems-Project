@@ -101,12 +101,33 @@ services:
     networks:
       shared_network:
 
+  schema-registry:
+    image: confluentinc/cp-schema-registry:latest
+    hostname: schema-registry
+    container_name: schema-registry
+    restart: always
+    depends_on:
+      - kafka-1
+      - kafka-2
+      - kafka-3
+    networks:
+      shared_network:
+    ports:
+      - "8081:8081"
+    environment:
+      SCHEMA_REGISTRY_HOST_NAME: schema-registry
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: "kafka-1:19092,kafka-2:29092,kafka-3:39092"
+      SCHEMA_REGISTRY_LISTENERS: "http://0.0.0.0:8081"
+      SCHEMA_REGISTRY_ACCESS_CONTROL_ALLOW_ORIGIN: '*'
+      SCHEMA_REGISTRY_ACCESS_CONTROL_ALLOW_METHODS: 'GET,POST,PUT,OPTIONS'
+
   kafka-connect:
     image: confluentinc/cp-kafka-connect-base:7.2.2
     depends_on:
       - kafka-1
       - kafka-2
       - kafka-3
+      - schema-registry
     networks:
       shared_network:
     ports:
@@ -140,25 +161,28 @@ services:
       CONNECT_AUTO_CREATE_TOPICS_ENABLE: "true"
       CONNECT_KEY_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
       CONNECT_VALUE_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
+      CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL: http://schema_registry:8081
+      CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: http://schema_registry:8081
 
   redpanda:
     image: vectorized/console:latest
     container_name: redpanda
+    depends_on:
+      - kafka-1
+      - kafka-2
+      - kafka-3
+      - schema-registry
     ports:
       - 8000:8080
-    restart: on-failure
-    entrypoint: /bin/sh
-    command: -c "echo \"$$CONSOLE_CONFIG_FILE\" > /tmp/config.yml; /app/console"
+    restart: unless-stopped
     environment:
-      CONFIG_FILEPATH: /tmp/config.yml
-      CONSOLE_CONFIG_FILE: |
-        kafka:
-          brokers: ["kafka-1:9092","kafka-2:9092","kafka-3:9092"]
-        connect:
-          enabled: true
-          clusters:
-            - name: HDFS Connector
-              url: http://kafka-connect:8083
+      environment:
+      KAFKA_BROKERS: kafka-1:9092,kafka-2:9092,kafka-3:9092
+      CONNECT_ENABLED: true
+      CONNECT_CLUSTERS_NAME: HDFS Connector
+      CONNECT_CLUSTERS_URL: http://kafka-connect:8083
+      KAFKA_SCHEMAREGISTRY_ENABLED: true
+      KAFKA_SCHEMAREGISTRY_URLS: http://schema-registry:8081
     networks:
       shared_network:
 
@@ -169,12 +193,17 @@ services:
       - 8080:8080
     restart: unless-stopped
     depends_on:
-      - kafka-connect
+      - kafka-1
+      - kafka-2
+      - kafka-3
+      - schema-registry
     environment:
       KAFKA_BROKERS: kafka-1:9092,kafka-2:9092,kafka-3:9092
       CONNECT_ENABLED: true
       CONNECT_CLUSTERS_NAME: HDFS Connector
       CONNECT_CLUSTERS_URL: http://kafka-connect:8083
+      KAFKA_SCHEMAREGISTRY_ENABLED: true
+      KAFKA_SCHEMAREGISTRY_URLS: http://schema-registry:8081
     networks:
       shared_network:
 
