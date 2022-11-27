@@ -121,6 +121,19 @@ services:
       SCHEMA_REGISTRY_ACCESS_CONTROL_ALLOW_ORIGIN: '*'
       SCHEMA_REGISTRY_ACCESS_CONTROL_ALLOW_METHODS: 'GET,POST,PUT,OPTIONS'
 
+  schema-registry-ui:
+    image: hausgold/schema-registry-ui:latest
+    hostname: schema-registry-ui
+    container_name: schema-registry-ui
+    restart: always
+    networks:
+      shared_network:
+    ports:
+      - "80:80"
+    environment:
+      MDNS_HOSTNAME: schema-registry-ui.local
+      SCHEMAREGISTRY_URL: http://schema-registry:8081
+
   kafka-connect:
     image: confluentinc/cp-kafka-connect-base:7.2.2
     depends_on:
