@@ -1,0 +1,13 @@
+{
+    "name": "kafka to hdfs",
+    "connector.class": "io.confluent.connect.hdfs3.Hdfs3SinkConnector",
+    "topics": "repo",
+    "hdfs.url": "hdfs://namenode:9000",
+    "flush.size": 3,
+    "confluent.topic.bootstrap.servers": "kafka-1:19092,kafka-2:29092,kafka-3:39092",
+    "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+    "value.converter": "io.confluent.connect.json.JsonSchemaConverter",
+    "key.converter.schemas.enable": "false",
+    "value.converter.schemas.enable": "false",
+    "value.converter.schema.registry.url": "http://schema-registry:8081"
+}
