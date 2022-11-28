@@ -37,7 +37,8 @@
   },
   "examples": [
     {
-      "repo_name": "ironbee/ironbee"
+      "repo_name": "zzzzzzzzzzz0/zhscript-go",
+      "langauges": {"Go": 60704, "Shell": 528}
     }
   ]
 }
