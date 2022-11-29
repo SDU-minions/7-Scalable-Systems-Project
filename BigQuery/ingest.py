@@ -40,7 +40,6 @@ def saveRepos(res):
         data = {"repo_name": repo_name}
         producer.produce(topic = "repos", value = data)
         producer.flush()
-    producer.close()
 
 def saveLanguages(res):
     for val in res.values:
