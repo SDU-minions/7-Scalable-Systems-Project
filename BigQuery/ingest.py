@@ -4,16 +4,43 @@ from kafka import KafkaProducer
 import datetime
 import json
 
+# --- https://pypi.org/project/kafka-schema-registry/ ---
+#from kafka_schema_registry import prepare_producer
+#topic_name = "topic_name"
+#SAMPLE_SCHEMA = {"type":"record", "name":"TestType", "fields":[{"name": "age", "type": "int"}, {"name": "name", "type": ["null", "string"]}]}
+#producer = prepare_producer(['kafka-1:9092'],
+#        f'http://schema-registry:8081',
+#        topic_name, 1, 1, value_schema=SAMPLE_SCHEMA)
+#producer.send(topic_name, {'age': 34})
+#producer.send(topic_name, {'age': 9000, 'name': 'john'})
+#producer.flush()
+
+from confluent_kafka import Producer, KafkaException
+from confluent_kafka.avro import AvroProducer
+from confluent_kafka import avro
+
 bq_assistant = BigQueryHelper("bigquery-public-data", "github_repos")
-k_producer = KafkaProducer(bootstrap_servers=['kafka-1:9092'])
+
+# --- https://www.stackstalk.com/2022/08/avro-producer-consumer-python.html ---
+repo_schema = avro.load("Avro/repo.avsc")
+language_schema = avro.load("Avro/language.avsc")
+commit_schema = avro.load("Avro/commit.avsc")
+
+producer_config = {
+    "bootstrap.servers": "kafka-1:9092,kafka-2:9092,kafka-3:9092",
+    "schema.registry.url": "http://schema-registry:8081"
+}
 
 global_limit = 100000
 
 def saveRepos(res):
+    producer = AvroProducer(producer_config, default_value_schema=repo_schema)
     for value in res.values:
         repo_name = value[0]
-        k_producer.send('repos', bytes(repo_name, 'utf-8'))
-        k_producer.flush()
+        data = {"repo_name": repo_name}
+        producer.produce(topic = "repos", value = data)
+        producer.flush()
+    producer.close()
 
 def saveLanguages(res):
     for val in res.values:
@@ -25,7 +52,7 @@ def saveLanguages(res):
             bytes = lang["bytes"]
             langauges[name] = bytes
         data = {
-                'repo_name ': repo_name,
+                'repo_name': repo_name,
                 'langauges' : langauges
                 }
         k_producer.send('languages', json.dumps(data).encode('utf-8'))
@@ -61,23 +88,13 @@ def saveFiles(res):
         k_producer.flush()
 
 def importRepos():
-    limit = global_limit
-    offset = 0
-    while (True):
-        QUERY = f"""
-            select repo
-            from bigquery-public-data.github_repos.commits c 
-            CROSS JOIN UNNEST(c.repo_name) as repo
-            GROUP BY repo
-            ORDER BY repo
-            LIMIT {limit} OFFSET {offset}
+    QUERY = f"""
+            select repo_name
+            from bigquery-public-data.github_repos.sample_repos
+            limit 10
             """
-        res = bq_assistant.query_to_pandas_safe(QUERY, max_gb_scanned=91)
-        saveRepos(res)
-        count = len(res.values)
-        if (count == 0):
-            break
-        offset += limit
+    res = bq_assistant.query_to_pandas_safe(QUERY)
+    saveRepos(res)
 
 def importLanguages():
     limit = global_limit
@@ -133,8 +150,6 @@ def importFiles():
             break
         offset += limit
 
-#importRepos()
+importRepos()
 #importLanguages()
-importCommits()
-
-k_producer.close()
+#importCommits()
