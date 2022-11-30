@@ -78,10 +78,36 @@ class MainActivity : AppCompatActivity() {
                     .setQueryInput(queryInput)
                     .build()
                 val result = sessionsClient?.detectIntent(detectIntentRequest)
-                Log.i(TAG, result.toString())
+
+                if (result != null) {
+                    val botReply: String = result.queryResult.intent.displayName
+                    Log.i(TAG, botReply)
+
+                }
+
             } catch (e: java.lang.Exception) {
                 Log.d(TAG, "doInBackground: " + e.message)
                 e.printStackTrace()
+            }
+        }
+    }
+
+    private fun updateUI(intent: String){
+        when (intent) {
+            "How many commits have been made the last specified hours?" -> {
+                return
+            }
+            "How many commits on average does each programming language have?" -> {
+                return
+            }
+            "What are the top x programming languages used in y time" -> {
+                return
+            }
+            "What is the latest commit on GitHub?" -> {
+                return
+            }
+            "What is the most active repository the last specified hours?" -> {
+                return
             }
         }
     }
