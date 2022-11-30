@@ -87,7 +87,7 @@ encoder = avro.io.BinaryEncoder(bytes_writer)
 writer.write(
     {
         "repo_name": "zzzzzzzzzzz0/zhscript-go",
-        "langauges": {"Go": 60704, "Shell": 528}
+        "languages": {"Go": 60704, "Shell": 528}
     }, encoder)
 raw_bytes = bytes_writer.getvalue()
 

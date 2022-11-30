@@ -6,7 +6,7 @@
   "title": "Root Schema",
   "required": [
     "repo_name",
-    "langauges"
+    "languages"
   ],
   "properties": {
     "repo_name": {
@@ -17,7 +17,7 @@
         "ironbee/ironbee"
       ]
     },
-    "langauges": {
+    "languages": {
       "type": "object",
       "default": "",
       "title": "The language Schema",
@@ -38,7 +38,7 @@
   "examples": [
     {
       "repo_name": "zzzzzzzzzzz0/zhscript-go",
-      "langauges": {"Go": 60704, "Shell": 528}
+      "languages": {"Go": 60704, "Shell": 528}
     }
   ]
 }

@@ -4,17 +4,6 @@ from kafka import KafkaProducer
 import datetime
 import json
 
-# --- https://pypi.org/project/kafka-schema-registry/ ---
-#from kafka_schema_registry import prepare_producer
-#topic_name = "topic_name"
-#SAMPLE_SCHEMA = {"type":"record", "name":"TestType", "fields":[{"name": "age", "type": "int"}, {"name": "name", "type": ["null", "string"]}]}
-#producer = prepare_producer(['kafka-1:9092'],
-#        f'http://schema-registry:8081',
-#        topic_name, 1, 1, value_schema=SAMPLE_SCHEMA)
-#producer.send(topic_name, {'age': 34})
-#producer.send(topic_name, {'age': 9000, 'name': 'john'})
-#producer.flush()
-
 from confluent_kafka import Producer, KafkaException
 from confluent_kafka.avro import AvroProducer
 from confluent_kafka import avro
@@ -42,17 +31,18 @@ def saveRepos(res):
         producer.flush()
 
 def saveLanguages(res):
+    producer = AvroProducer(producer_config, default_value_schema=language_schema)
     for val in res.values:
         repo_name = val[0]
         language = val[1]
-        langauges = {}
+        languages = {}
         for lang in language:
             name = lang["name"]
             bytes = lang["bytes"]
-            langauges[name] = bytes
+            languages[name] = bytes
         data = {
                 'repo_name': repo_name,
-                'langauges' : langauges
+                'languages' : languages
                 }
         k_producer.send('languages', json.dumps(data).encode('utf-8'))
         k_producer.flush()
