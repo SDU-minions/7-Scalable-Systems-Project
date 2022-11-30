@@ -20,8 +20,6 @@ producer_config = {
     "schema.registry.url": "http://schema-registry:8081"
 }
 
-global_limit = 100000
-
 def saveRepos(res):
     producer = AvroProducer(producer_config, default_value_schema=repo_schema)
     for value in res.values:
@@ -44,10 +42,11 @@ def saveLanguages(res):
                 'repo_name': repo_name,
                 'languages' : languages
                 }
-        k_producer.send('languages', json.dumps(data).encode('utf-8'))
-        k_producer.flush()
+        producer.produce(topic = "languages", value = data)
+        producer.flush()
 
 def saveCommits(res):
+    producer = AvroProducer(producer_config, default_value_schema=commit_schema)
     for val in res.values:
         repo_name = val[0]
         repo_names = []
@@ -62,19 +61,8 @@ def saveCommits(res):
             'author' : author,
             'date': date
             }
-        k_producer.send('commits', json.dumps(data).encode('utf-8'))
-        k_producer.flush()
-
-def saveFiles(res):
-    for val in res.values:
-        repo_name = val[0]
-        path = val[1]
-        data = {
-            'repo_name ': repo_name,
-            'path' : path
-            }
-        k_producer.send('files', json.dumps(data).encode('utf-8'))
-        k_producer.flush()
+        producer.produce(topic = "commits", value = data)
+        producer.flush()
 
 def importRepos():
     QUERY = f"""
@@ -86,58 +74,26 @@ def importRepos():
     saveRepos(res)
 
 def importLanguages():
-    limit = global_limit
-    offset = 0
-    while (True):
-        QUERY = f"""
-                select repo_name, language
-                from bigquery-public-data.github_repos.languages
-                order by repo_name
-                LIMIT {limit} OFFSET {offset}
-                """
-        res = bq_assistant.query_to_pandas_safe(QUERY)
-        saveLanguages(res)
-        count = len(res.values)
-        if (count == 0):
-            break
-        offset += limit
+    QUERY = f"""
+            select repo_name, language
+            from bigquery-public-data.github_repos.languages
+            order by repo_name
+            """
+    res = bq_assistant.query_to_pandas_safe(QUERY)
+    saveLanguages(res)
+
 
 def importCommits():
-    limit = global_limit
-    offset = 0
-    while (True):
-        fromDate = datetime.datetime(1998, 1, 1).timestamp()
-        toDate = datetime.datetime(2002, 12, 31).timestamp()
-        QUERY = f"""
-                select repo_name, commit, author.name, author.date
-                from bigquery-public-data.github_repos.commits
-                where author.date.seconds >= {fromDate}
-                and author.date.seconds <= {toDate}
-                LIMIT {limit} OFFSET {offset}
-                """
-        res = bq_assistant.query_to_pandas_safe(QUERY, max_gb_scanned=107)
-        saveCommits(res)
-        count = len(res.values)
-        if (count == 0):
-            break
-        offset += limit
-
-def importFiles():
-    limit = global_limit
-    offset = 0
-    while (True):
-        QUERY = f"""
-                select repo_name, path
-                from bigquery-public-data.github_repos.files
-                order by repo_name, path
-                LIMIT {limit} OFFSET {offset}
-                """
-        res = bq_assistant.query_to_pandas_safe(QUERY)
-        saveFiles(res)
-        count = len(res.values)
-        if (count == 0):
-            break
-        offset += limit
+    fromDate = datetime.datetime(1998, 1, 1).timestamp()
+    toDate = datetime.datetime(2002, 12, 31).timestamp()
+    QUERY = f"""
+            select repo_name, commit, author.name, author.date
+            from bigquery-public-data.github_repos.commits
+            where author.date.seconds >= {fromDate}
+            and author.date.seconds <= {toDate}
+            """
+    res = bq_assistant.query_to_pandas_safe(QUERY, max_gb_scanned=107)
+    saveCommits(res)
 
 importRepos()
 #importLanguages()
