@@ -1,12 +1,8 @@
 # https://github.com/SohierDane/BigQuery_Helper
 from bq_helper import BigQueryHelper
-from kafka import KafkaProducer
-import datetime
-import json
-
-from confluent_kafka import Producer, KafkaException
-from confluent_kafka.avro import AvroProducer
 from confluent_kafka import avro
+from confluent_kafka.avro import AvroProducer
+import datetime
 
 bq_assistant = BigQueryHelper("bigquery-public-data", "github_repos")
 
@@ -82,10 +78,9 @@ def importLanguages():
     res = bq_assistant.query_to_pandas_safe(QUERY)
     saveLanguages(res)
 
-
 def importCommits():
-    fromDate = datetime.datetime(1998, 1, 1).timestamp()
-    toDate = datetime.datetime(2002, 12, 31).timestamp()
+    fromDate = datetime.datetime(2022, 1, 1).timestamp()
+    toDate = datetime.datetime(2022, 6, 30).timestamp()
     QUERY = f"""
             select repo_name, commit, author.name, author.date
             from bigquery-public-data.github_repos.commits
