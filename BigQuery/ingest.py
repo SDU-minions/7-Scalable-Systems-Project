@@ -87,9 +87,9 @@ def importCommits():
             where author.date.seconds >= {fromDate}
             and author.date.seconds <= {toDate}
             """
-    res = bq_assistant.query_to_pandas_safe(QUERY, max_gb_scanned=107)
+    res = bq_assistant.query_to_pandas_safe(QUERY)
     saveCommits(res)
 
-importRepos()
-#importLanguages()
+#importRepos()
+importLanguages()
 #importCommits()

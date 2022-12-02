@@ -5,6 +5,12 @@ import io
 import avro.schema
 import avro.io
 
+# 3.587.419
+fromDate = datetime.datetime(2022, 1, 1).timestamp()
+toDate = datetime.datetime(2022, 6, 30).timestamp()
+
+exit()
+
 # 72.912.390
 fromDate = datetime.datetime(2010, 1, 1).timestamp()
 toDate = datetime.datetime(2014, 12, 31).timestamp()
