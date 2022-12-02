@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.hide()
 
         //initialize bot config
-        setUpBot()
+        //setUpBot()
 
         //initialize mic config
         // initializing variables of list view with their ids.
@@ -191,7 +191,8 @@ class MainActivity : AppCompatActivity() {
                 Log.i(TAG, res)
 
 
-
+                //initialize bot config
+                setUpBot()
                 sendMessageToBot(res)
 
                 /*
