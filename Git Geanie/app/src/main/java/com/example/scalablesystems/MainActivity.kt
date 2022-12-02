@@ -43,8 +43,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         supportActionBar?.hide()
 
-        //initialize bot config
-        //setUpBot()
 
         //initialize mic config
         // initializing variables of list view with their ids.
@@ -98,7 +96,6 @@ class MainActivity : AppCompatActivity() {
             val stream = this.resources.openRawResource(R.raw.credentials)
             val credentials: GoogleCredentials = GoogleCredentials.fromStream(stream)
                 .createScoped("https://www.googleapis.com/auth/cloud-platform")
-            //val projectId: String = (credentials as ServiceAccountCredentials).projectId
             val projectId: String = "myfirstagent-htrt"
             val settingsBuilder: SessionsSettings.Builder = SessionsSettings.newBuilder()
             val sessionsSettings: SessionsSettings = settingsBuilder.setCredentialsProvider(
@@ -171,9 +168,6 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-
-
-
     // on below line we are calling on activity result method.
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -194,14 +188,6 @@ class MainActivity : AppCompatActivity() {
                 //initialize bot config
                 setUpBot()
                 sendMessageToBot(res)
-
-                /*
-                // on below line we are setting data
-                // to our output text view.
-                outputTV.setText(
-                    Objects.requireNonNull(res)[0]
-                )*/
-
 
             }
         }
