@@ -64,7 +64,6 @@ def importRepos():
     QUERY = f"""
             select repo_name
             from bigquery-public-data.github_repos.sample_repos
-            limit 10
             """
     res = bq_assistant.query_to_pandas_safe(QUERY)
     saveRepos(res)
@@ -73,23 +72,21 @@ def importLanguages():
     QUERY = f"""
             select repo_name, language
             from bigquery-public-data.github_repos.languages
-            order by repo_name
             """
     res = bq_assistant.query_to_pandas_safe(QUERY)
     saveLanguages(res)
 
 def importCommits():
     fromDate = datetime.datetime(2022, 1, 1).timestamp()
-    toDate = datetime.datetime(2022, 6, 30).timestamp()
+    toDate = datetime.datetime(2022, 12, 1).timestamp()
     QUERY = f"""
             select repo_name, commit, author.name, author.date
             from bigquery-public-data.github_repos.commits
-            where author.date.seconds >= {fromDate}
-            and author.date.seconds <= {toDate}
+            where author.date.seconds between {fromDate} and {toDate}
             """
-    res = bq_assistant.query_to_pandas_safe(QUERY)
+    res = bq_assistant.query_to_pandas_safe(QUERY, max_gb_scanned=107)
     saveCommits(res)
 
-#importRepos()
-importLanguages()
+importRepos()
+#importLanguages()
 #importCommits()
