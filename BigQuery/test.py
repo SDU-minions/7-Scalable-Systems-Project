@@ -5,64 +5,6 @@ import io
 import avro.schema
 import avro.io
 
-# 3.587.419
-fromDate = datetime.datetime(2022, 1, 1).timestamp()
-toDate = datetime.datetime(2022, 6, 30).timestamp()
-
-exit()
-
-# 72.912.390
-fromDate = datetime.datetime(2010, 1, 1).timestamp()
-toDate = datetime.datetime(2014, 12, 31).timestamp()
-
-# 50.738.053
-fromDate = datetime.datetime(2009, 1, 1).timestamp()
-toDate = datetime.datetime(2013, 12, 31).timestamp()
-
-# 36.384.471
-fromDate = datetime.datetime(2008, 1, 1).timestamp()
-toDate = datetime.datetime(2012, 12, 31).timestamp()
-
-# 27.466.024
-fromDate = datetime.datetime(2007, 1, 1).timestamp()
-toDate = datetime.datetime(2011, 12, 31).timestamp()
-
-# 21.067.074
-fromDate = datetime.datetime(2006, 1, 1).timestamp()
-toDate = datetime.datetime(2010, 12, 31).timestamp()
-
-# 15.996.403
-fromDate = datetime.datetime(2005, 1, 1).timestamp()
-toDate = datetime.datetime(2009, 12, 31).timestamp()
-
-# 12.068.691
-fromDate = datetime.datetime(2004, 1, 1).timestamp()
-toDate = datetime.datetime(2008, 12, 31).timestamp()
-
-# 9.846.404
-fromDate = datetime.datetime(2003, 1, 1).timestamp()
-toDate = datetime.datetime(2007, 12, 31).timestamp()
-
-# 7.920.803
-fromDate = datetime.datetime(2002, 1, 1).timestamp()
-toDate = datetime.datetime(2006, 12, 31).timestamp()
-
-# 6.396.062
-fromDate = datetime.datetime(2001, 1, 1).timestamp()
-toDate = datetime.datetime(2005, 12, 31).timestamp()
-
-# 5.080.673
-fromDate = datetime.datetime(2000, 1, 1).timestamp()
-toDate = datetime.datetime(2004, 12, 31).timestamp()
-
-# 3.890.019
-fromDate = datetime.datetime(1999, 1, 1).timestamp()
-toDate = datetime.datetime(2003, 12, 31).timestamp()
-
-# 2.406.768
-fromDate = datetime.datetime(1998, 1, 1).timestamp()
-toDate = datetime.datetime(2002, 12, 31).timestamp()
-
 SCHEMA_PATH = "Avro/repo.avsc"
 SCHEMA = avro.schema.parse(open(SCHEMA_PATH).read())
 

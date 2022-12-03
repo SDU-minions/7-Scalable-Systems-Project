@@ -87,6 +87,6 @@ def importCommits():
     res = bq_assistant.query_to_pandas_safe(QUERY, max_gb_scanned=107)
     saveCommits(res)
 
-importRepos()
-#importLanguages()
-#importCommits()
+#importRepos()
+importLanguages()
+importCommits()
