@@ -3,6 +3,7 @@ version: "3.9"
 services:
 
   zookeeper-1:
+    container_name: zookeeper-1
     image: confluentinc/cp-zookeeper:7.2.1
     ports:
       - 2181:2181
@@ -15,6 +16,7 @@ services:
       shared_network:
 
   zookeeper-2:
+    container_name: zookeeper-2
     image: confluentinc/cp-zookeeper:7.2.1
     ports:
       - 2182:2181
@@ -27,6 +29,7 @@ services:
       shared_network:
 
   zookeeper-3:
+    container_name: zookeeper-3
     image: confluentinc/cp-zookeeper:7.2.1
     ports:
       - 2183:2181
@@ -39,6 +42,7 @@ services:
       shared_network:
 
   kafka-1:
+    container_name: kafka-1
     image: confluentinc/cp-kafka:7.2.1
     ports:
       - 19092:19092
@@ -60,6 +64,7 @@ services:
       shared_network:
 
   kafka-2:
+    container_name: kafka-2
     image: confluentinc/cp-kafka:7.2.1
     ports:
       - 29092:29092
@@ -81,6 +86,7 @@ services:
       shared_network:
 
   kafka-3:
+    container_name: kafka-3
     image: confluentinc/cp-kafka:7.2.1
     ports:
       - 39092:39092
@@ -102,9 +108,9 @@ services:
       shared_network:
 
   schema-registry:
+    container_name: schema-registry
     image: confluentinc/cp-schema-registry:latest
     hostname: schema-registry
-    container_name: schema-registry
     restart: always
     depends_on:
       - kafka-1
@@ -121,20 +127,8 @@ services:
       SCHEMA_REGISTRY_ACCESS_CONTROL_ALLOW_ORIGIN: '*'
       SCHEMA_REGISTRY_ACCESS_CONTROL_ALLOW_METHODS: 'GET,POST,PUT,OPTIONS'
 
-  schema-registry-ui:
-    image: hausgold/schema-registry-ui:latest
-    hostname: schema-registry-ui
-    container_name: schema-registry-ui
-    restart: always
-    networks:
-      shared_network:
-    ports:
-      - "80:80"
-    environment:
-      MDNS_HOSTNAME: schema-registry-ui.local
-      SCHEMAREGISTRY_URL: http://schema-registry:8081
-
   kafka-connect:
+    container_name: kafka-connect
     image: confluentinc/cp-kafka-connect-base:7.2.2
     depends_on:
       - kafka-1
@@ -146,7 +140,6 @@ services:
     ports:
       - "35000:35000"
       - "8083:8083"
-    container_name: kafka-connect
     command:
     - bash
     - -c
@@ -177,30 +170,8 @@ services:
       CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL: http://schema_registry:8081
       CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: http://schema_registry:8081
 
-  redpanda:
-    image: vectorized/console:latest
-    container_name: redpanda
-    depends_on:
-      - kafka-1
-      - kafka-2
-      - kafka-3
-      - schema-registry
-    ports:
-      - 8000:8080
-    restart: unless-stopped
-    environment:
-      environment:
-      KAFKA_BROKERS: kafka-1:9092,kafka-2:9092,kafka-3:9092
-      CONNECT_ENABLED: true
-      CONNECT_CLUSTERS_NAME: HDFS Connector
-      CONNECT_CLUSTERS_URL: http://kafka-connect:8083
-      KAFKA_SCHEMAREGISTRY_ENABLED: true
-      KAFKA_SCHEMAREGISTRY_URLS: http://schema-registry:8081
-    networks:
-      shared_network:
-
   kowl:
-    # We use the master tag as we want to use the latest features e.g. creation of topics.
+    container_name: kowl
     image: quay.io/cloudhut/kowl:master 
     ports:
       - 8080:8080
@@ -220,9 +191,32 @@ services:
     networks:
       shared_network:
 
+# The new version of "kowl" =>
+#  redpanda:
+#    container_name: redpanda
+#    image: vectorized/console:latest
+#    depends_on:
+#      - kafka-1
+#      - kafka-2
+#      - kafka-3
+#      - schema-registry
+#    ports:
+#      - 8000:8080
+#    restart: unless-stopped
+#    environment:
+#      environment:
+#      KAFKA_BROKERS: kafka-1:9092,kafka-2:9092,kafka-3:9092
+#      CONNECT_ENABLED: true
+#      CONNECT_CLUSTERS_NAME: HDFS Connector
+#      CONNECT_CLUSTERS_URL: http://kafka-connect:8083
+#      KAFKA_SCHEMAREGISTRY_ENABLED: true
+#      KAFKA_SCHEMAREGISTRY_URLS: http://schema-registry:8081
+#    networks:
+#      shared_network:
+
   namenode:
-    image: bde2020/hadoop-namenode:2.0.0-hadoop3.2.1-java8
     container_name: namenode
+    image: bde2020/hadoop-namenode:2.0.0-hadoop3.2.1-java8
     restart: always
     ports:
       - 9870:9870
@@ -237,14 +231,14 @@ services:
     networks:
       shared_network:
 
-  datanode2:
+  datanode:
+    container_name: datanode
     image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
-    container_name: datanode2
     restart: always
     depends_on:
       - namenode
     volumes:
-      - hadoop_datanode2:/hadoop/dfs/data
+      - hadoop_datanode:/hadoop/dfs/data
     ports:
       - 9864:9864
     environment:
@@ -256,7 +250,7 @@ services:
 
 volumes:
   hadoop_namenode:
-  hadoop_datanode2:
+  hadoop_datanode:
 
 networks:
   shared_network:
