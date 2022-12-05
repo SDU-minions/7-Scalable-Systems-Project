@@ -12,8 +12,8 @@ language_schema = avro.load("Avro/language.avsc")
 commit_schema = avro.load("Avro/commit.avsc")
 
 producer_config = {
-    "bootstrap.servers": "kafka-1:9092,kafka-2:9092,kafka-3:9092",
-    "schema.registry.url": "http://schema-registry:8081"
+    "bootstrap.servers": "10.123.252.231:9092,10.123.252.194:9092,10.123.252.207:9092",
+    "schema.registry.url": "http://10.123.252.231:8082"
 }
 
 def saveRepos(res):
