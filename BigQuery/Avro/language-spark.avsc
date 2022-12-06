@@ -1,0 +1,9 @@
+{
+	"namespace": "git.avro",
+	"type": "record",
+	"name": "Language",
+	"fields": [
+		{"name": "repo_name",  "type": "string"},
+		{"name": "languages", "type": "string"}
+	]
+}
