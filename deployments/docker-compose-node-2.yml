@@ -5,6 +5,7 @@ services:
     container_name: namenode
     image: bde2020/hadoop-namenode:2.0.0-hadoop3.2.1-java8
     restart: unless-stopped
+    network_mode: host
     ports:
       - 9870:9870
       - 9000:9000
@@ -20,6 +21,7 @@ services:
     container_name: datanode-2
     image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
     restart: unless-stopped
+    network_mode: host
     volumes:
       - hadoop_datanode2:/hadoop/dfs/data
     ports:
@@ -33,6 +35,7 @@ services:
     container_name: spark-worker-2
     image: bde2020/spark-worker:3.3.0-hadoop3.3
     restart: unless-stopped
+    network_mode: host
     ports:
       - 8081:8081
     environment:
@@ -52,6 +55,7 @@ services:
     container_name: kafka-2
     image: confluentinc/cp-kafka:7.2.1
     restart: unless-stopped
+    network_mode: host
     ports:
       - 29092:29092
       - 9092:9092
@@ -71,6 +75,7 @@ services:
     container_name: hive-server
     image: bde2020/hive:2.3.2-postgresql-metastore
     restart: unless-stopped
+    network_mode: host
     env_file:
       - ./hadoop-hive.env
     environment:
@@ -83,6 +88,7 @@ services:
     container_name: hive-metastore
     image: bde2020/hive:2.3.2-postgresql-metastore
     restart: unless-stopped
+    network_mode: host
     env_file:
       - ./hadoop-hive.env
     command: /opt/hive/bin/hive --service metastore
@@ -94,6 +100,7 @@ services:
   hive-metastore-postgresql:
     container_name: hive-metastore-postgresql
     restart: unless-stopped
+    network_mode: host
     ports:
       - "5432:5432"
     build: 
@@ -106,6 +113,7 @@ services:
     container_name: presto-coordinator
     image: shawnzhu/prestodb:0.181
     restart: unless-stopped
+    network_mode: host
     ports:
       - "8080:8080"
 
