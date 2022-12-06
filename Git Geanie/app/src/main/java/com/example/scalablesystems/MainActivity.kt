@@ -2,6 +2,7 @@ package com.example.scalablesystems
 
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.speech.RecognizerIntent
 import android.util.Log
@@ -17,8 +18,6 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
-import android.content.Intent
-import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity() {
     //Dialogflow: https://github.com/veeyaarVR/dialogflow_android_kotlin
@@ -36,7 +35,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var micIV: ImageView
 
     // on below line we are creating a constant value
-    private val REQUEST_CODE_SPEECH_INPUT = 1
+    private val REQUEST_CODE_SPEECH_INPUT = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,6 +79,7 @@ class MainActivity : AppCompatActivity() {
                 startActivityForResult(intent, REQUEST_CODE_SPEECH_INPUT)
             }  catch (e: Exception) {
                 // on below line we are displaying error message in toast
+                    //If no mic, then
                 Toast
                     .makeText(
                         this@MainActivity, " " + e.message,
@@ -90,6 +90,12 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+
+    private fun setText(message: String) {
+        runOnUiThread { outputTV.setText(message) }
+    }
+
+
 
     private fun setUpBot() {
         try {
@@ -109,12 +115,15 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
     private fun sendMessageToBot(message: String) {
         val input = QueryInput.newBuilder()
             .setText(TextInput.newBuilder().setText(message).setLanguageCode("en-US")).build()
         GlobalScope.launch {
             sendMessageInBg(input, message)
         }
+
+
     }
 
     private suspend fun sendMessageInBg(
@@ -128,13 +137,19 @@ class MainActivity : AppCompatActivity() {
                     .build()
                 val result = sessionsClient?.detectIntent(detectIntentRequest)
 
+                setText(result.toString())
+
+
+
                 if (result != null) {
                     val botReply: String = result.queryResult.intent.displayName
                     Log.i(TAG, botReply)
                     if (botReply == "Default Welcome Intent" || botReply ==  "Default Fallback Intent"){
-                        outputTV.setText("Git Genie does not understand, try again")
+                        setText("Git Genie does not understand, try again")
                     } else {
-                        outputTV.setText(message)
+                        //setText(result.queryResult.toString())
+                        //updateUI()
+
                     }
 
                 }
@@ -147,9 +162,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateUI(intent: String){
+
+        setText("test")
         when (intent) {
             "How many commits have been made the last specified hours?" -> {
-                return
+
             }
             "How many commits on average does each programming language have?" -> {
                 return
