@@ -15,8 +15,6 @@ services:
       - CLUSTER_NAME=test
     env_file:
       - ./hadoop.env
-    networks:
-      sharednetwork:
 
   datanode-2:
     container_name: datanode-2
@@ -80,8 +78,7 @@ services:
       SERVICE_PRECONDITION: "hive-metastore:9083"
     ports:
       - "10000:10000"
-    networks:
-      sharednetwork:
+    network_mode: host
 
   hive-metastore:
     container_name: hive-metastore
@@ -94,8 +91,7 @@ services:
       SERVICE_PRECONDITION: "namenode:9870 hive-metastore-postgresql:5432"
     ports:
       - "9083:9083" 
-    networks:
-      sharednetwork:
+    network_mode: host
 
   hive-metastore-postgresql:
     container_name: hive-metastore-postgresql
@@ -105,8 +101,7 @@ services:
       dockerfile: Dockerfile
     environment:
       - POSTGRES_HOST_AUTH_METHOD=trust
-    networks:
-      sharednetwork:
+    network_mode: host
       
   presto-coordinator:
     container_name: presto-coordinator
@@ -114,13 +109,8 @@ services:
     restart: unless-stopped
     ports:
       - "8080:8080"
-    networks:
-      sharednetwork:
+    network_mode: host
 
 volumes:
   hadoop_namenode:
   hadoop_datanode2:
-
-networks:
-  sharednetwork:
-    name: "sharednetwork"
