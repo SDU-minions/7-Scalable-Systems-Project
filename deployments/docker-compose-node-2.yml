@@ -74,11 +74,10 @@ services:
     env_file:
       - ./hadoop-hive.env
     environment:
-      HIVE_CORE_CONF_javax_jdo_option_ConnectionURL: "jdbc:postgresql://hive-metastore/metastore"
+      HIVE_CORE_CONF_javax_jdo_option_ConnectionURL: "jdbc:postgresql://10.123.252.194:5432/metastore"
       SERVICE_PRECONDITION: "hive-metastore:9083"
     ports:
       - "10000:10000"
-    network_mode: host
 
   hive-metastore:
     container_name: hive-metastore
@@ -88,20 +87,20 @@ services:
       - ./hadoop-hive.env
     command: /opt/hive/bin/hive --service metastore
     environment:
-      SERVICE_PRECONDITION: "namenode:9870 hive-metastore-postgresql:5432"
+      SERVICE_PRECONDITION: "10.123.252.194:9870 10.123.252.194:5432"
     ports:
       - "9083:9083" 
-    network_mode: host
 
   hive-metastore-postgresql:
     container_name: hive-metastore-postgresql
     restart: unless-stopped
+    ports:
+      - "5432:5432"
     build: 
       context: ./hive-docker
       dockerfile: Dockerfile
     environment:
       - POSTGRES_HOST_AUTH_METHOD=trust
-    network_mode: host
       
   presto-coordinator:
     container_name: presto-coordinator
@@ -109,7 +108,6 @@ services:
     restart: unless-stopped
     ports:
       - "8080:8080"
-    network_mode: host
 
 volumes:
   hadoop_namenode:
