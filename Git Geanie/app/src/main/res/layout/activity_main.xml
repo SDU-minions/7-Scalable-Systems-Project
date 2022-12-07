@@ -21,6 +21,7 @@
 
     <!--creating text view on below line-->
     <TextView
+        android:id="@+id/idMicText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/idIVMic"

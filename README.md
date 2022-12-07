@@ -135,3 +135,10 @@ the inject option for the directive controller injection was removed.
 ```
 
 [source](https://gist.github.com/stephenparish/9941e89d80e2bc58a153#file-commit-md)
+
+Git Genie 
+----------------------------
+Running on computer and connecting to database 
+```
+ssh bddst-g11-Node2 -L 10000:localhost:10000
+```

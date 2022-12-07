@@ -39,6 +39,7 @@ class MainActivity : AppCompatActivity() {
     // for text view and image view
     lateinit var outputTV: TextView
     lateinit var micIV: ImageView
+    lateinit var micText: TextView
     lateinit var resultOutput: TextView
 
     // on below line we are creating a constant value
@@ -54,6 +55,7 @@ class MainActivity : AppCompatActivity() {
         // initializing variables of list view with their ids.
         outputTV = findViewById(R.id.idTVOutput)
         micIV = findViewById(R.id.idIVMic)
+        micText = findViewById(R.id.idMicText)
         resultOutput = findViewById(R.id.idResultOutput)
 
         // on below line we are adding on click
@@ -94,6 +96,9 @@ class MainActivity : AppCompatActivity() {
                         Toast.LENGTH_SHORT
                     )
                     .show()*/
+                mic = false
+                micIV.setOnClickListener{setText("no mic")}
+                micText.setText("Click on mic to change between intents ")
             }
         }
 
@@ -178,23 +183,28 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateUI(intent: String){
         hideResult()
-        when (intent) {
-            "How many commits have been made the last specified hours?" -> {
-                showResult("42")
+        if(mic){
+            when (intent) {
+                "How many commits have been made the last specified hours?" -> {
+                    showResult("42")
+                }
+                "How many commits on average does each programming language have?" -> {
+                    showResult("Java has 1056 commits")
+                }
+                "What are the top x programming languages used in y time" -> {
+                    return
+                }
+                "What is the latest commit on GitHub?" -> {
+                    showResult("The latest commit is super awesome!!")
+                }
+                "What is the most active repository the last specified hours?" -> {
+                    showResult("The most active repository is Git Genie")
+                }
             }
-            "How many commits on average does each programming language have?" -> {
-                showResult("Java has 1056 commits")
-            }
-            "What are the top x programming languages used in y time" -> {
-                return
-            }
-            "What is the latest commit on GitHub?" -> {
-                showResult("The latest commit is super awesome!!")
-            }
-            "What is the most active repository the last specified hours?" -> {
-                showResult("The most active repository is Git Genie")
-            }
+        } else {
+
         }
+
     }
 
 
