@@ -83,7 +83,7 @@ services:
     ports:
       - "10000:10000"
     networks:
-      sharednetwork:
+      hivenetwork:
 
   hive-metastore:
     container_name: hive-metastore
@@ -97,7 +97,7 @@ services:
     ports:
       - "9083:9083" 
     networks:
-      sharednetwork:
+      hivenetwork:
 
   hive-metastore-postgresql:
     container_name: hive-metastore-postgresql
@@ -108,7 +108,7 @@ services:
     environment:
       - POSTGRES_HOST_AUTH_METHOD=trust
     networks:
-      sharednetwork:
+      hivenetwork:
       
   presto-coordinator:
     container_name: presto-coordinator
@@ -117,12 +117,12 @@ services:
     ports:
       - "8080:8080"
     networks:
-      sharednetwork:
+      hivenetwork:
 
 volumes:
   hadoop_namenode:
   hadoop_datanode2:
 
 networks:
-  sharednetwork:
-    name: "sharednetwork"
+  hivenetwork:
+    name: "hivenetwork"
