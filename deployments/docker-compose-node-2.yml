@@ -89,8 +89,6 @@ services:
     container_name: hive-metastore
     image: bde2020/hive:2.3.2-postgresql-metastore
     restart: unless-stopped
-    networks:
-      sharednetwork:
     env_file:
       - ./hadoop-hive.env
     command: /opt/hive/bin/hive --service metastore
@@ -98,28 +96,28 @@ services:
       SERVICE_PRECONDITION: "10.123.252.194:9870 hive-metastore-postgresql:5432"
     ports:
       - "9083:9083" 
+    networks:
+      sharednetwork:
 
   hive-metastore-postgresql:
     container_name: hive-metastore-postgresql
     restart: unless-stopped
-    networks:
-      sharednetwork:
-    ports:
-      - "5432:5432"
     build: 
       context: ./hive-docker
       dockerfile: Dockerfile
     environment:
       - POSTGRES_HOST_AUTH_METHOD=trust
+    networks:
+      sharednetwork:
       
   presto-coordinator:
     container_name: presto-coordinator
     image: shawnzhu/prestodb:0.181
     restart: unless-stopped
-    networks:
-      sharednetwork:
     ports:
       - "8080:8080"
+    networks:
+      sharednetwork:
 
 volumes:
   hadoop_namenode:
