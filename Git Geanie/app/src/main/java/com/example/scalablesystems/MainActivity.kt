@@ -6,10 +6,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.speech.RecognizerIntent
 import android.util.Log
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import com.google.api.gax.core.FixedCredentialsProvider
 import com.google.auth.oauth2.GoogleCredentials
 import com.google.cloud.dialogflow.v2.*
@@ -33,6 +36,7 @@ class MainActivity : AppCompatActivity() {
     // for text view and image view
     lateinit var outputTV: TextView
     lateinit var micIV: ImageView
+    lateinit var resultOutput: TextView
 
     // on below line we are creating a constant value
     private val REQUEST_CODE_SPEECH_INPUT = 0
@@ -47,6 +51,7 @@ class MainActivity : AppCompatActivity() {
         // initializing variables of list view with their ids.
         outputTV = findViewById(R.id.idTVOutput)
         micIV = findViewById(R.id.idIVMic)
+        resultOutput = findViewById(R.id.idResultOutput)
 
         // on below line we are adding on click
         // listener for mic image view.
@@ -95,6 +100,18 @@ class MainActivity : AppCompatActivity() {
         runOnUiThread { outputTV.setText(message) }
     }
 
+    private fun showResult(result: String){
+        runOnUiThread{
+            resultOutput.setText(result)
+            resultOutput.visibility = View.VISIBLE
+        }
+    }
+
+    private fun hideResult(){
+        runOnUiThread{
+            resultOutput.visibility = View.INVISIBLE
+        }
+    }
 
 
     private fun setUpBot() {
@@ -137,19 +154,14 @@ class MainActivity : AppCompatActivity() {
                     .build()
                 val result = sessionsClient?.detectIntent(detectIntentRequest)
 
-                setText(result.toString())
-
-
-
                 if (result != null) {
                     val botReply: String = result.queryResult.intent.displayName
                     Log.i(TAG, botReply)
                     if (botReply == "Default Welcome Intent" || botReply ==  "Default Fallback Intent"){
                         setText("Git Genie does not understand, try again")
                     } else {
-                        //setText(result.queryResult.toString())
-                        //updateUI()
-
+                        setText(message)
+                        updateUI(botReply)
                     }
 
                 }
@@ -162,24 +174,23 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateUI(intent: String){
-
-        setText("test")
+        hideResult()
+        setText(intent)
         when (intent) {
             "How many commits have been made the last specified hours?" -> {
-
+                showResult("42")
             }
             "How many commits on average does each programming language have?" -> {
-                return
+                showResult("Java has 1056 commits")
             }
             "What are the top x programming languages used in y time" -> {
                 return
             }
             "What is the latest commit on GitHub?" -> {
-                return
+                showResult("The latest commit is super awesome!!")
             }
             "What is the most active repository the last specified hours?" -> {
-                return
-            } "else" -> {
+                showResult("The most active repository is Git Genie")
             }
         }
     }
