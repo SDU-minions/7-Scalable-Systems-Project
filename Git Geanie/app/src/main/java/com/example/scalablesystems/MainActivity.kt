@@ -32,6 +32,9 @@ class MainActivity : AppCompatActivity() {
     private val uuid = UUID.randomUUID().toString()
     private val TAG = "mainactivity"
 
+    //if mic on/ isnt on computer
+    private var mic: Boolean = true
+
     // on below line we are creating variables
     // for text view and image view
     lateinit var outputTV: TextView
@@ -85,12 +88,12 @@ class MainActivity : AppCompatActivity() {
             }  catch (e: Exception) {
                 // on below line we are displaying error message in toast
                     //If no mic, then
-                Toast
+               /* Toast
                     .makeText(
                         this@MainActivity, " " + e.message,
                         Toast.LENGTH_SHORT
                     )
-                    .show()
+                    .show()*/
             }
         }
 
@@ -161,7 +164,7 @@ class MainActivity : AppCompatActivity() {
                         setText("Git Genie does not understand, try again")
                     } else {
                         setText(message)
-                        updateUI(botReply)
+                        //updateUI(botReply)
                     }
 
                 }

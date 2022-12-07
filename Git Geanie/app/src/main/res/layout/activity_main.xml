@@ -1,28 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/cardview_light_background"
-    android:visibility="invisible"
     tools:context=".MainActivity">
 
 
     <!--creating a simple image view for mic-->
-
-    <TextView
-        android:id="@+id/idResultOutput"
-        android:layout_width="match_parent"
-        android:layout_height="165dp"
-        android:layout_below="@id/idIVMic"
-        android:layout_marginTop="186dp"
-        android:gravity="center"
-        android:text="I AM THE RESULT"
-        android:textAlignment="center"
-        android:textColor="@color/black"
-        android:textSize="34sp"
-        android:visibility="visible" />
-
     <ImageView
         android:id="@+id/idIVMic"
         android:layout_width="100dp"
@@ -30,7 +17,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="25dp"
         android:src="@drawable/ic_mic"
-        android:tint="@color/purple_200" />
+        app:tint="@color/purple_200" />
 
     <!--creating text view on below line-->
     <TextView
@@ -58,5 +45,19 @@
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="20sp" />
+
+
+    <TextView
+        android:id="@+id/idResultOutput"
+        android:layout_width="match_parent"
+        android:layout_height="165dp"
+        android:layout_below="@id/idIVMic"
+        android:layout_marginTop="186dp"
+        android:gravity="center"
+        android:text="I AM THE RESULT"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="34sp"
+        android:visibility="visible" />
 
 </RelativeLayout>
