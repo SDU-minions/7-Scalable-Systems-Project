@@ -164,7 +164,7 @@ class MainActivity : AppCompatActivity() {
                         setText("Git Genie does not understand, try again")
                     } else {
                         setText(message)
-                        //updateUI(botReply)
+                        updateUI(botReply)
                     }
 
                 }
@@ -178,7 +178,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateUI(intent: String){
         hideResult()
-        setText(intent)
         when (intent) {
             "How many commits have been made the last specified hours?" -> {
                 showResult("42")
