@@ -37,5 +37,7 @@ def save_language(row: Row):
     producer.produce(topic = "languages-exploded", value = row.asDict())
     producer.flush()
 
-exploded_df.writeStream\
+queue = exploded_df.writeStream\
     .foreach(save_language).start()
+
+queue.awaitTermination()

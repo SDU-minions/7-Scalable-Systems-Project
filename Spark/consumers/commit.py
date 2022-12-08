@@ -37,5 +37,7 @@ def save_commit(row: Row):
     producer.produce(topic = "commits-exploded", value = row.asDict())
     producer.flush()
 
-exploded_df.writeStream\
+queue = exploded_df.writeStream\
     .foreach(save_commit).start()
+
+queue.awaitTermination()
