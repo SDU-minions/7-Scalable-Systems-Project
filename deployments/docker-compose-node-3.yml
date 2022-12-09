@@ -14,6 +14,10 @@ services:
       SERVICE_PRECONDITION: "10.123.252.194:9870"
     env_file:
       - ./hadoop.env
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   spark-master:
     container_name: spark-master
@@ -28,6 +32,10 @@ services:
       - ./BigQuery/Avro/:/scripts/consumers/Avro/
     environment:
       - INIT_DAEMON_STEP=setup_spark
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   spark-worker-3:
     container_name: spark-worker-3
@@ -40,6 +48,10 @@ services:
       - 8081:8081
     environment:
       - "SPARK_MASTER=10.123.252.207:7077"
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   zookeeper-3:
     container_name: zookeeper-3
@@ -50,6 +62,10 @@ services:
       ZOOKEEPER_SERVER_ID: 3
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_SERVERS: 10.123.252.231:2888:3888;10.123.252.194:2888:3888;10.123.252.207:2888:3888
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
   
   kafka-3:
     container_name: kafka-3
@@ -70,6 +86,10 @@ services:
       KAFKA_ADVERTISED_LISTENERS: "INTERNAL://10.123.252.207:9092,EXTERNAL://host.docker.internal:39092"
     depends_on:
       - zookeeper-3
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
 
 volumes:
   hadoop_datanode3:
