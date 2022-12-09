@@ -23,6 +23,9 @@ services:
     ports:
       - 8080:8080
       - 7077:7077
+    volumes:
+      - ./Spark/:/scripts/
+      - ./BigQuery/Avro/:/scripts/consumers/Avro/
     environment:
       - INIT_DAEMON_STEP=setup_spark
 

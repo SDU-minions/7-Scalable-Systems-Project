@@ -1,26 +1,5 @@
 # 7-Project
 
-Spark
-----------------------------
-
-After running the docker application, Spark needs to be set up.
-
-Execute into the Spark master container
-```sh
-docker exec -it spark-master bin/sh
-```
-
-Create Spark environment
-```sh
-bash scripts/create_environment.sh
-```
-
-Submit the applications to Spark (Run in two seperate terminals)
-```sh
-bash scripts/start_commit_consumer.sh
-bash scripts/start_language_consumer.sh
-```
-
 Format of the commit messages
 ----------------------------
 ```
