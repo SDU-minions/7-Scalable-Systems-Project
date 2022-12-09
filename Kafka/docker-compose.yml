@@ -222,7 +222,6 @@ services:
 #      - 8000:8080
 #    restart: unless-stopped
 #    environment:
-#      environment:
 #      KAFKA_BROKERS: kafka-1:9092,kafka-2:9092,kafka-3:9092
 #      CONNECT_ENABLED: true
 #      CONNECT_CLUSTERS_NAME: HDFS Connector
