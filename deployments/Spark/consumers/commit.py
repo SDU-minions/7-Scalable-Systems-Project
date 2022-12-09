@@ -12,7 +12,7 @@ spark.sparkContext.setLogLevel("ERROR")
 df = spark \
     .readStream \
     .format("kafka") \
-    .option("kafka.bootstrap.servers", "kafka-2:29092") \
+    .option("kafka.bootstrap.servers", "10.123.252.194:9092") \
     .option("subscribe", "commits") \
     .option("startingOffsets", "earliest") \
     .load() \
@@ -28,8 +28,8 @@ exploded_df = (df
 
 commit_spark_schema = avro.load("scripts/consumers/Avro/commit-spark.avsc")
 producer_config = {
-    "bootstrap.servers": "kafka-1:9092,kafka-2:9092,kafka-3:9092",
-    "schema.registry.url": "http://schema-registry:8081"
+    "bootstrap.servers": "10.123.252.231:9092,10.123.252.194:9092,10.123.252.207:9092",
+    "schema.registry.url": "http://10.123.252.231:8082"
 }
 
 def save_commit(row: Row):
