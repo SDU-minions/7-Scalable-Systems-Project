@@ -1,10 +1,11 @@
 from pyhive import hive
-from flask import Flask
 import os
 from google.cloud import dialogflow
+import speech_recognition as sr
+
+r = sr.Recognizer()
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = 'private_key.json'
-app = Flask(__name__)
 
 DIALOGFLOW_PROJECT_ID = 'myfirstagent-htrt'
 DIALOGFLOW_LANGUAGE_CODE = 'en-US'
@@ -46,15 +47,28 @@ def detect_intent_texts(project_id, session_id, texts, language_code):
             )
         )
         print("Fulfillment text: {}\n".format(response.query_result.fulfillment_text))
+        return response.query_result.fulfillment_text
 
-
-@app.route('/')
-def hello_world():
-    #detect_intent_texts(DIALOGFLOW_PROJECT_ID, SESSION_ID, ['top commits'], DIALOGFLOW_LANGUAGE_CODE)
-    #for result in hive_query("SELECT * FROM repos LIMIT 10"):
-    #    print(result)
-    return 'Hello World!'
-
+def speech_to_text():
+    with sr.Microphone() as source:
+        print("Talk")
+        audio_text = r.listen(source)
+        print("Time over, thanks")
+        
+        try:
+            res = r.recognize_google(audio_text)
+            print("Text: " + res)
+        except:
+            print("Sorry, I did not get that")
+        return res
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    while True:
+        if(input("Press Enter to start talking...\n") == 'exit'):
+            break
+        query_text = [speech_to_text()]
+        query_intent = detect_intent_texts(DIALOGFLOW_PROJECT_ID, SESSION_ID, query_text, DIALOGFLOW_LANGUAGE_CODE)
+        if query_intent == '':
+            continue
+        output = hive_query(query_intent)
+        print(output)
