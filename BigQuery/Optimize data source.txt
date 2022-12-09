@@ -1,8 +1,0 @@
-CREATE OR REPLACE TABLE scalable-systems-project.Antje12DataSet.commits
- PARTITION BY 
-     DATE(author_date)
- AS (
-     select repo_name, commit, author.name as author_name, TIMESTAMP_SECONDS(author.date.seconds) as author_date
-  from bigquery-public-data.github_repos.commits
-  where author.date.seconds between 1640995200 and 1669852800
- );

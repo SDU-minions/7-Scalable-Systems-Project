@@ -1,8 +1,0 @@
-{
-	"namespace": "git.avro",
-	"type": "record",
-	"name": "Repo",
-	"fields": [
-		{"name": "repo_name",  "type": "string"}
-	]
-}
