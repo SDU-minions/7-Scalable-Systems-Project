@@ -52,4 +52,21 @@ dependencies {
     implementation 'io.grpc:grpc-okhttp:1.30.0'
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0")
+
+    // https://mvnrepository.com/artifact/javax.jdo/jdo2-api
+    //implementation("javax.jdo:jdo2-api:2.3-ec")
+
+    // https://mvnrepository.com/artifact/org.apache.hive/hive-jdbc
+   // implementation("org.apache.hive:hive-jdbc:0.10.0")
+
+    // https://mvnrepository.com/artifact/org.apache.hive/hive-jdbc
+    implementation("org.apache.hive:hive-jdbc:1.1.0")
+
+
+
+
+
+
+
+
 }

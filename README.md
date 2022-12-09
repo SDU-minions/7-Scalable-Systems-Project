@@ -141,4 +141,14 @@ Git Genie
 Running on computer and connecting to database 
 ```
 ssh bddst-g11-Node2 -L 10000:localhost:10000
+
+docker exec -ti hive-server beeline
+
+!connect jdbc:hive2://localhost:10000
+
+#username and password 'hive'
+
+SHOW TABLES;
+
+
 ```

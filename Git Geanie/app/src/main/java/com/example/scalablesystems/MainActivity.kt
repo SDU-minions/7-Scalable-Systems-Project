@@ -9,10 +9,7 @@ import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isInvisible
-import androidx.core.view.isVisible
 import com.google.api.gax.core.FixedCredentialsProvider
 import com.google.auth.oauth2.GoogleCredentials
 import com.google.cloud.dialogflow.v2.*
@@ -21,6 +18,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
+
 
 class MainActivity : AppCompatActivity() {
     //Dialogflow: https://github.com/veeyaarVR/dialogflow_android_kotlin
@@ -101,6 +99,8 @@ class MainActivity : AppCompatActivity() {
                 micText.setText("Click on mic to change between intents ")
             }
         }
+
+       HiveConnection.connect()
 
     }
 
