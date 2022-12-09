@@ -12,8 +12,8 @@ language_schema = avro.load("Avro/language.avsc")
 commit_schema = avro.load("Avro/commit.avsc")
 
 producer_config = {
-    "bootstrap.servers": "kafka-1:9092,kafka-2:9092,kafka-3:9092",
-    "schema.registry.url": "http://schema-registry:8081"
+    "bootstrap.servers": "10.123.252.231:9092,10.123.252.194:9092,10.123.252.207:9092",
+    "schema.registry.url": "http://10.123.252.231:8082"
 }
 
 def saveRepos(res):
@@ -64,7 +64,6 @@ def importRepos():
     QUERY = f"""
             select repo_name
             from bigquery-public-data.github_repos.sample_repos
-            limit 10
             """
     res = bq_assistant.query_to_pandas_safe(QUERY)
     saveRepos(res)
@@ -73,7 +72,6 @@ def importLanguages():
     QUERY = f"""
             select repo_name, language
             from bigquery-public-data.github_repos.languages
-            limit 10
             """
     res = bq_assistant.query_to_pandas_safe(QUERY)
     saveLanguages(res)
@@ -85,11 +83,10 @@ def importCommits():
             select repo_name, commit, author.name, author.date
             from bigquery-public-data.github_repos.commits
             where author.date.seconds between {fromDate} and {toDate}
-            limit 10
             """
     res = bq_assistant.query_to_pandas_safe(QUERY, max_gb_scanned=107)
     saveCommits(res)
 
-#importRepos()
+importRepos()
 importLanguages()
 importCommits()
