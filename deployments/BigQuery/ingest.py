@@ -88,5 +88,5 @@ def importCommits():
     saveCommits(res)
 
 importRepos()
-#importLanguages()
-#importCommits()
+importLanguages()
+importCommits()
