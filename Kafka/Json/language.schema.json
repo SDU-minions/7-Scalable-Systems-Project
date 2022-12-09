@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "$id": "http://example.com/example.json",
+  "type": "object",
+  "default": {},
+  "title": "Root Schema",
+  "required": [
+    "repo_name",
+    "languages"
+  ],
+  "properties": {
+    "repo_name": {
+      "type": "string",
+      "default": "",
+      "title": "The repo_name Schema",
+      "examples": [
+        "ironbee/ironbee"
+      ]
+    },
+    "languages": {
+      "type": "object",
+      "default": "",
+      "title": "The language Schema",
+      "examples": [
+        "Go"
+      ],
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 0,
+        "default": 0,
+        "title": "The byte Schema",
+        "examples": [
+          60704
+        ]
+      }
+    }
+  },
+  "examples": [
+    {
+      "repo_name": "zzzzzzzzzzz0/zhscript-go",
+      "languages": {"Go": 60704, "Shell": 528}
+    }
+  ]
+}

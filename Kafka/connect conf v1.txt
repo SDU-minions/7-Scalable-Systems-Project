@@ -1,0 +1,10 @@
+{
+    "confluent.topic.bootstrap.servers": "kafka-1:19092,kafka-2:29092,kafka-3:39092",
+    "connector.class": "io.confluent.connect.hdfs3.Hdfs3SinkConnector",
+    "flush.size": "3",
+    "hdfs.url": "hdfs://namenode:9000",
+    "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+    "name": "kafka to hdfs",
+    "topics": "commits",
+    "value.converter": "org.apache.kafka.connect.storage.StringConverter"
+}
