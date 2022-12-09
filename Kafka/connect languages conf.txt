@@ -1,0 +1,17 @@
+{
+    "confluent.topic.bootstrap.servers": "10.123.252.231:9092,10.123.252.194:9092,10.123.252.207:9092",
+    "connector.class": "io.confluent.connect.hdfs3.Hdfs3SinkConnector",
+    "flush.size": "3",
+    "format.class": "io.confluent.connect.hdfs3.parquet.ParquetFormat",
+    "hdfs.url": "hdfs://10.123.252.194:9000",
+    "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+    "logs.dir": "logs",
+    "name": "kafka to hdfs - languages-exploded",
+    "topics": "languages-exploded",
+    "topics.dir": "topics",
+    "value.converter": "io.confluent.connect.avro.AvroConverter",
+    "value.converter.schema.registry.url": "http://10.123.252.231:8082",
+    "hive.integration": "true",
+    "hive.metastore.uris": "thrift://10.123.252.194:9083",
+    "schema.compatibility": "BACKWARD"
+}
