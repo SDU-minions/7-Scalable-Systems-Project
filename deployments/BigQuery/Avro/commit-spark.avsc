@@ -3,7 +3,7 @@
 	"type": "record",
 	"name": "Commit",
 	"fields": [
-		{"name": "repo_names", "type": "string"},
+		{"name": "repo_name", "type": "string"},
 		{"name": "commit",  "type": "string"},
 		{"name": "author", "type": "string"},
 		{"name": "date", "type": "int"}

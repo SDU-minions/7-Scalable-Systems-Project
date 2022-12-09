@@ -4,6 +4,7 @@
 	"name": "Language",
 	"fields": [
 		{"name": "repo_name",  "type": "string"},
-		{"name": "languages", "type": "string"}
+		{"name": "language", "type": "string"},
+		{"name": "language_size", "type": "int"}
 	]
 }

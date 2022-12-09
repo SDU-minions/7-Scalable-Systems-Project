@@ -2,5 +2,5 @@ kafka-python
 pandas
 google-cloud-bigquery
 db-dtypes
-confluent-kafka
+confluent_kafka
 avro
