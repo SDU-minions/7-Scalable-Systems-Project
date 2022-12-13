@@ -78,13 +78,10 @@ if __name__ == '__main__':
         if query_intent == '':
             continue
         output = hive_query(query_intent)
-<<<<<<< HEAD
-        print(output)
-        
-=======
+
         print("="*20)
         print("The result is: ")
         for i in output:
             print(i)
         print("="*20)
->>>>>>> 63fe27a985214f7bb4a694260904ef50b1325049
+
