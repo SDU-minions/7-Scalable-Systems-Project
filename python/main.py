@@ -67,6 +67,7 @@ def speech_to_text():
         return res
 
 if __name__ == '__main__':
+    
     while True:
         if(input("Press Enter to start talking...\n") == 'exit'):
             break
@@ -77,4 +78,8 @@ if __name__ == '__main__':
         if query_intent == '':
             continue
         output = hive_query(query_intent)
-        print(output)
+        print("="*20)
+        print("The result is: ")
+        for i in output:
+            print(i)
+        print("="*20)
