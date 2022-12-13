@@ -72,3 +72,4 @@ if __name__ == '__main__':
             continue
         output = hive_query(query_intent)
         print(output)
+        
