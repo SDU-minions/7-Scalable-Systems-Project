@@ -1,7 +1,9 @@
 from pyhive import hive
 import os
+from os import devnull
 from google.cloud import dialogflow
 import speech_recognition as sr
+from contextlib import redirect_stdout
 
 r = sr.Recognizer()
 
@@ -27,7 +29,7 @@ def detect_intent_texts(project_id, session_id, texts, language_code):
     session_client = dialogflow.SessionsClient()
 
     session = session_client.session_path(project_id, session_id)
-    print("Session path: {}\n".format(session))
+    #print("Session path: {}\n".format(session))
 
     for text in texts:
         text_input = dialogflow.TextInput(text=text, language_code=language_code)
@@ -46,7 +48,7 @@ def detect_intent_texts(project_id, session_id, texts, language_code):
                 response.query_result.intent_detection_confidence,
             )
         )
-        print("Fulfillment text: {}\n".format(response.query_result.fulfillment_text))
+        #print("Fulfillment text: {}\n".format(response.query_result.fulfillment_text))
         return response.query_result.fulfillment_text
 
 def speech_to_text():
@@ -54,21 +56,32 @@ def speech_to_text():
         print("Talk")
         audio_text = r.listen(source)
         print("Time over, thanks")
-        
+
         try:
-            res = r.recognize_google(audio_text)
-            print("Text: " + res)
+            with redirect_stdout(open(devnull, 'w')) as fnull:
+                res = r.recognize_google(audio_text)
+            print("Captured text: " + res)
         except:
-            print("Sorry, I did not get that")
+            res = ""
+            print("Sorry, I did not get that, please try again")
         return res
 
 if __name__ == '__main__':
+    
     while True:
         if(input("Press Enter to start talking...\n") == 'exit'):
             break
         query_text = [speech_to_text()]
+        if(query_text == ['']):
+            continue
         query_intent = detect_intent_texts(DIALOGFLOW_PROJECT_ID, SESSION_ID, query_text, DIALOGFLOW_LANGUAGE_CODE)
         if query_intent == '':
             continue
         output = hive_query(query_intent)
-        print(output)
+
+        print("="*20)
+        print("The result is: ")
+        for i in output:
+            print(i)
+        print("="*20)
+

@@ -2,7 +2,7 @@
 
 To setup the python interface you need to do the following in the ``python`` folder:
 ```bash
-pip install -r requirements
+pip install -r requirements.txt
 ```
 followed by:
 ```bash

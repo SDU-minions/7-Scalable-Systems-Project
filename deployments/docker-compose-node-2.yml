@@ -16,6 +16,10 @@ services:
       - CLUSTER_NAME=test
     env_file:
       - ./hadoop.env
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   datanode-2:
     container_name: datanode-2
@@ -30,6 +34,10 @@ services:
       SERVICE_PRECONDITION: "10.123.252.194:9870"
     env_file:
       - ./hadoop.env
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
   
   spark-worker-2:
     container_name: spark-worker-2
@@ -40,6 +48,10 @@ services:
       - 8081:8081
     environment:
       - "SPARK_MASTER=10.123.252.207:7077"
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   zookeeper-2:
     container_name: zookeeper-2
@@ -50,6 +62,10 @@ services:
       ZOOKEEPER_SERVER_ID: 2
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_SERVERS: 10.123.252.231:2888:3888;10.123.252.194:2888:3888;10.123.252.207:2888:3888
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
   
   kafka-2:
     container_name: kafka-2
@@ -70,6 +86,10 @@ services:
       KAFKA_ADVERTISED_LISTENERS: "INTERNAL://10.123.252.194:9092,EXTERNAL://host.docker.internal:29092"
     depends_on:
       - zookeeper-2
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   hive-server:
     container_name: hive-server
@@ -84,6 +104,10 @@ services:
       - "10000:10000"
     networks:
       hivenetwork:
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   hive-metastore:
     container_name: hive-metastore
@@ -98,6 +122,10 @@ services:
       - "9083:9083" 
     networks:
       hivenetwork:
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   hive-metastore-postgresql:
     container_name: hive-metastore-postgresql
@@ -109,6 +137,10 @@ services:
       - POSTGRES_HOST_AUTH_METHOD=trust
     networks:
       hivenetwork:
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
       
   presto-coordinator:
     container_name: presto-coordinator
@@ -118,6 +150,10 @@ services:
       - "8080:8080"
     networks:
       hivenetwork:
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
 
 volumes:
   hadoop_namenode:
