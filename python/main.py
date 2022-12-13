@@ -54,11 +54,12 @@ def speech_to_text():
         print("Talk")
         audio_text = r.listen(source)
         print("Time over, thanks")
-        
+
         try:
             res = r.recognize_google(audio_text)
             print("Text: " + res)
         except:
+            res = ""
             print("Sorry, I did not get that")
         return res
 
