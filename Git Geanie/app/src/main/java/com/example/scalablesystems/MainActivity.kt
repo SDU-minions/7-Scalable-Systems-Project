@@ -100,7 +100,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-       HiveConnection.connect()
+       //HiveConnection.connect()
 
     }
 
