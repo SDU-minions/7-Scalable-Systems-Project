@@ -1,0 +1,6 @@
+kafka-python
+pandas
+google-cloud-bigquery
+db-dtypes
+confluent_kafka
+avro
